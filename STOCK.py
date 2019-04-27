@@ -12,68 +12,59 @@ from WindPy import w
 from pymongo import MongoClient
 
 
-def df2dict(df, column, note1=None, note2=None, func=None):
-    df = df[['代码', '日期', column]]
-    df = df.rename(columns={'代码': 'CODE1', '日期': 'DATE', column: 'VALUE'})
+def df2dict(df, name_in_csv):
+    df = df[['代码', '日期', name_in_csv]]
+    df = df.rename(columns={'代码': 'CODE1', '日期': 'DATE', name_in_csv: 'VALUE'})
     df = df.dropna()
-    if func:
-        df['VALUE'] = df['VALUE'].apply(func)
-    if note1:
-        df['NOTE1'] = note1
-    if note2:
-        df['NOTE2'] = note2
     df = df.astype(str)
     return [df.loc[i].to_dict() for i in df.index]
-
-
-def insert(df, collection_name, column, note1=None, note2=None, func=None):
-    df = df2dict(df, column=column, note1=note1, note2=note2, func=func)
-    if df:
-        client['行情指标'][collection_name].insert_many(df)
 
 
 if __name__ == '__main__':
 
     client = MongoClient(host='139.199.125.235', port=8888)
-    '''
+
     # ////////// 行情指标
     data = {i: pd.read_csv(os.path.join('csv', i), encoding='cp936') for i in os.listdir('csv')}
+    data_dict = {}
     for i, df in data.items():
-        print(i)
-        # /// 前收盘价, 不复权
-        insert(df, '前收盘价', '前收盘价(元)', '0', None, None)
+        i = i.strip('.CSV')
+        data_dict[i] = {}
 
-        # /// 开盘价, 不复权
-        insert(df, '开盘价', '开盘价(元)', '0', None, None)
+        # /// 前收盘价
+        data_dict[i]['前收盘价'] = df2dict(df, '前收盘价(元)')
 
-        # /// 最高价, 不复权
-        insert(df, '最高价', '最高价(元)', '0', None, None)
+        # /// 开盘价
+        data_dict[i]['开盘价'] = df2dict(df, '开盘价(元)')
 
-        # /// 最低价, 不复权
-        insert(df, '最低价', '最低价(元)', '0', None, None)
+        # /// 最高价
+        data_dict[i]['最高价'] = df2dict(df, '最高价(元)')
 
-        # /// 收盘价, 不复权
-        insert(df, '收盘价', '收盘价(元)', '0', None, None)
+        # /// 最低价
+        data_dict[i]['最低价'] = df2dict(df, '最低价(元)')
+
+        # /// 收盘价
+        data_dict[i]['收盘价'] = df2dict(df, '收盘价(元)')
 
         # /// 均价
-        insert(df, '均价', '均价(元)', None, None, lambda x: '{:.4f}'.format(x))
+        data_dict[i]['均价'] = df2dict(df, '均价(元)')
 
         # /// 涨跌
-        insert(df, '涨跌', '涨跌(元)', None, None, None)
+        data_dict[i]['涨跌'] = df2dict(df, '涨跌(元)')
 
         # /// 涨跌幅
-        insert(df, '涨跌幅', '涨跌幅(%)', None, None, lambda x: '{:.4f}'.format(x))
+        data_dict[i]['涨跌幅'] = df2dict(df, '涨跌幅(%)')
 
         # /// 换手率
-        insert(df, '换手率', '换手率(%)', None, None, None)
+        data_dict[i]['换手率'] = df2dict(df, '换手率(%)')
 
         # /// 换手率(自由流通股本)
 
         # /// 成交量
-        insert(df, '成交量', '成交量(股)', None, None, None)
+        data_dict[i]['成交量'] = df2dict(df, '成交量(股)')
 
         # /// 成交额
-        insert(df, '成交额', '成交金额(元)', None, None, None)
+        data_dict[i]['成交额'] = df2dict(df, '成交金额(元)')
 
         # /// 成交笔数
         # /// 振幅
@@ -88,6 +79,9 @@ if __name__ == '__main__':
         # /// 收盘价(支持定点复权)
         # /// 涨跌停状态
         # /// AH股溢价率
+        print(i)
+        break
+
     '''
 
     # ////////// API数据, DATABASE, COLLECTION, CODE1, CODE2, DATE, TIME, VALUE, NOTE1, NOTE2
@@ -123,3 +117,4 @@ if __name__ == '__main__':
     # ////////// 股权分置改革
     # ////////// 技术形态
     # ////////// 其他指标
+    '''
