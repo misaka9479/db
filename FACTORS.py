@@ -11,13 +11,16 @@ if __name__ == '__main__':
     client_raw = MongoClient(host='139.199.125.235', port=8888)
     client_factors = MongoClient(host='139.199.125.235', port=9999)
 
-    date = '20190423'  # date将在实际运行时由代码生成
+    date = '20190422'  # date将在实际运行时由代码生成
 
     # 52-week high
+    '''今天的价格除以52周内的最高价'''
     f_DATE_gte = (datetime.datetime.strptime(date, '%Y%m%d').date() - datetime.timedelta(52 * 7)).strftime('%Y%m%d')
     f_DATE_lte = date
     data = client_raw['行情指标']['前收盘价'].find({'DATE': {'$gte': f_DATE_gte, '$lte': f_DATE_lte}})
     data = pd.DataFrame(data)
     data['VALUE'] = data['VALUE'].astype(float)
-    data = data.groupby('CODE1')['VALUE'].max()
+    data_max = data.groupby('CODE1')['VALUE'].max()
+    data_today = data[data['DATE'] == date].set_index('CODE1')['VALUE']
+    data = data_today / data_max
     client_factors['FINANCIAL']['52WH'].insert_many([{'CODE1': CODE1, 'VALUE': str(VALUE), 'DATE': date} for CODE1, VALUE in data.items()])

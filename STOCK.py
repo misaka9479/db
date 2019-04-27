@@ -104,7 +104,7 @@ if __name__ == '__main__':
 
     # ////////// 股东指标
     # /// 大股东持股比例
-    for i in range(1, 11):  # 大股东持股比例有附加参数"大股东排名", 取值1-10, 在这里进行遍历
+    for i in range(1, 2):  # 大股东持股比例有附加参数"大股东排名", 取值1-10, 在这里进行遍历
         rsp = w.wss(codes, "holder_pct", "tradeDate={};order={}".format(date, i))  # 向API请求数据
         data = zip(rsp.Codes, rsp.Data[0])
         client['股东指标']['大股东持股比例'].insert_many([{'CODE1': code, 'DATE': date, 'VALUE': str(value), 'NOTE1': str(i)} for code, value in data if not math.isnan(value)])  # 向数据库插入多条数据
