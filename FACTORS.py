@@ -13,8 +13,10 @@ if __name__ == '__main__':
 
     date = '20190422'  # date将在实际运行时由代码生成
 
-    # 52-week high
-    '''今天的价格除以52周内的最高价'''
+    '''
+    52-week high
+    今天的价格除以52周内的最高价
+    '''
     f_DATE_gte = (datetime.datetime.strptime(date, '%Y%m%d').date() - datetime.timedelta(52 * 7)).strftime('%Y%m%d')
     f_DATE_lte = date
     data = client_raw['行情指标']['前收盘价'].find({'DATE': {'$gte': f_DATE_gte, '$lte': f_DATE_lte}})
