@@ -14,9 +14,9 @@ if __name__ == '__main__':
     date = '20190423'  # date将在实际运行时由代码生成
 
     # 52-week high
-    f_DATE_gte = (datetime.datetime.strptime(date, '%Y%m%d').date() - datetime.timedelta(1 * 7)).strftime('%Y%m%d')  # todo
+    f_DATE_gte = (datetime.datetime.strptime(date, '%Y%m%d').date() - datetime.timedelta(52 * 7)).strftime('%Y%m%d')
     f_DATE_lte = date
-    data = client_raw['行情指标']['前收盘价'].find({'DATE': {'$gte': f_DATE_gte, '$lte': f_DATE_lte}}).limit(1000)  # todo
+    data = client_raw['行情指标']['前收盘价'].find({'DATE': {'$gte': f_DATE_gte, '$lte': f_DATE_lte}})
     data = pd.DataFrame(data)
     data['VALUE'] = data['VALUE'].astype(float)
     data = data.groupby('CODE1')['VALUE'].max()
