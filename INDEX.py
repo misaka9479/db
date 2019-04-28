@@ -19,8 +19,7 @@ if __name__ == '__main__':
     # ////////// 行情指标
     # /// 收盘价
     data = w.wss(codes, "close", "tradeDate={};priceAdj=U;cycle=D".format(date))
-    data = list(zip(data.Codes, data.Data[0]))
-    for code, value in data:
+    for code, value in zip(data.Codes, data.Data[0]):
         data_dict[code].append({'DATE': date, 'NAME': '收盘价', 'VALUE': value})
 
     # ////////// 股本指标
