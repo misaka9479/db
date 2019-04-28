@@ -8,12 +8,17 @@ from WindPy import w
 from pymongo import MongoClient
 
 
-def get(codes, fields, options, name):
+def get(codes, fields, options, name, note1=None, note2=None):
     global date
     global data_dict
     d = w.wss(codes, fields, options)
     for c, v in zip(d.Codes, d.Data[0]):
-        data_dict[c].append({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v)})
+        if note2:
+            data_dict[c].append({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v), 'NOTE1': note1, 'NOTE2': note2})
+        elif note1:
+            data_dict[c].append({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v), 'NOTE1': note1})
+        else:
+            data_dict[c].append({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v)})
 
 
 if __name__ == '__main__':
@@ -35,6 +40,9 @@ if __name__ == '__main__':
     # ////////// 分析指标
     # /// 剩余期限(天)
     get(codes, 'day', 'tradeDate={}'.format(date), '剩余期限(天)')
+
+    # /// 收盘到期收益率
+    get(codes, 'day', 'tradeDate={}'.format(date), '收盘到期收益率')
 
     # ////////// 信用分析指标
     # /// 发行时债项评级
