@@ -13,7 +13,7 @@ def get(codes, fields, options, name):
     global data_dict
     d = w.wss(codes, fields, options)
     for c, v in zip(d.Codes, d.Data[0]):
-        data_dict[c].append({'DATE': date, 'NAME': name, 'VALUE': v})
+        data_dict[c].append({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v)})
 
 
 if __name__ == '__main__':
