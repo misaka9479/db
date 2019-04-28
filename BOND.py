@@ -33,6 +33,9 @@ if __name__ == '__main__':
 
     # ////////// 债券估值
     # ////////// 分析指标
+    # /// 剩余期限(天)
+    get(codes, 'day', 'tradeDate={}'.format(date), '剩余期限(天)')
+
     # ////////// 信用分析指标
     # /// 发行时债项评级
     data = w.wss(codes, "creditrating")
