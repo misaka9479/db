@@ -10,11 +10,13 @@ import datetime
 import pandas as pd
 from WindPy import w
 from pymongo import MongoClient
+import pickle
 
 
-def df2dict(df, name_in_csv):
-    df = df[['代码', '日期', name_in_csv]]
-    df = df.rename(columns={'代码': 'CODE1', '日期': 'DATE', name_in_csv: 'VALUE'})
+def df2dict(df, name_in_csv, name_in_db):
+    df = df[['日期', name_in_csv]]
+    df = df.rename(columns={'日期': 'DATE', name_in_csv: 'VALUE'})
+    df['NAME'] = name_in_db
     df = df.dropna()
     df = df.astype(str)
     return [df.loc[i].to_dict() for i in df.index]
@@ -23,48 +25,47 @@ def df2dict(df, name_in_csv):
 if __name__ == '__main__':
 
     client = MongoClient(host='139.199.125.235', port=8888)
-
+    '''
     # ////////// 行情指标
     data = {i: pd.read_csv(os.path.join('csv', i), encoding='cp936') for i in os.listdir('csv')}
     data_dict = {}
     for i, df in data.items():
         i = i.strip('.CSV')
-        data_dict[i] = {}
+        data_dict[i] = []
 
         # /// 前收盘价
-        data_dict[i]['前收盘价'] = df2dict(df, '前收盘价(元)')
+        data_dict[i] += df2dict(df, '前收盘价(元)', '前收盘价')
 
         # /// 开盘价
-        data_dict[i]['开盘价'] = df2dict(df, '开盘价(元)')
+        data_dict[i] += df2dict(df, '开盘价(元)', '开盘价')
 
         # /// 最高价
-        data_dict[i]['最高价'] = df2dict(df, '最高价(元)')
+        data_dict[i] += df2dict(df, '最高价(元)', '最高价')
 
         # /// 最低价
-        data_dict[i]['最低价'] = df2dict(df, '最低价(元)')
+        data_dict[i] += df2dict(df, '最低价(元)', '最低价')
 
         # /// 收盘价
-        data_dict[i]['收盘价'] = df2dict(df, '收盘价(元)')
+        data_dict[i] += df2dict(df, '收盘价(元)', '收盘价')
 
         # /// 均价
-        data_dict[i]['均价'] = df2dict(df, '均价(元)')
+        data_dict[i] += df2dict(df, '均价(元)', '均价')
 
         # /// 涨跌
-        data_dict[i]['涨跌'] = df2dict(df, '涨跌(元)')
+        data_dict[i] += df2dict(df, '涨跌(元)', '涨跌')
 
         # /// 涨跌幅
-        data_dict[i]['涨跌幅'] = df2dict(df, '涨跌幅(%)')
+        data_dict[i] += df2dict(df, '涨跌幅(%)', '涨跌幅')
 
         # /// 换手率
-        data_dict[i]['换手率'] = df2dict(df, '换手率(%)')
+        # data_dict[i] += df2dict(df, '换手率(%)', '换手率')
 
         # /// 换手率(自由流通股本)
-
         # /// 成交量
-        data_dict[i]['成交量'] = df2dict(df, '成交量(股)')
+        data_dict[i] += df2dict(df, '成交量(股)', '成交量')
 
         # /// 成交额
-        data_dict[i]['成交额'] = df2dict(df, '成交金额(元)')
+        data_dict[i] += df2dict(df, '成交金额(元)', '成交额')
 
         # /// 成交笔数
         # /// 振幅
@@ -79,11 +80,13 @@ if __name__ == '__main__':
         # /// 收盘价(支持定点复权)
         # /// 涨跌停状态
         # /// AH股溢价率
+        # pickle.dump(data_dict, open('data_dict.pkl', 'wb'))
         print(i)
-        break
 
+    # data_dict = pickle.load(open('data_dict.pkl', 'rb'))
+    for code, docs in data_dict.items():
+        client['STOCK'][code].insert_many(docs)
     '''
-
     # ////////// API数据, DATABASE, COLLECTION, CODE1, CODE2, DATE, TIME, VALUE, NOTE1, NOTE2
     w.start()
 
@@ -117,4 +120,3 @@ if __name__ == '__main__':
     # ////////// 股权分置改革
     # ////////// 技术形态
     # ////////// 其他指标
-    '''
