@@ -92,6 +92,7 @@ if __name__ == '__main__':
     date = '20190423'  # date = datetime.date.today().strftime('%Y%m%d')
     codes = w.wset("sectorconstituent", "date={};sectorid=a001010100000000".format(date)).Data[1]  # 全部A股codes
     codes = codes[:10]  # 写代码时不用请求全部的
+    data_dict = {code: [] for code in codes}
 
     # ////////// 基本资料
     # ////////// 股本指标
