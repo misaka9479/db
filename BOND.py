@@ -7,6 +7,15 @@
 from WindPy import w
 from pymongo import MongoClient
 
+
+def get(codes, fields, options, name):
+    global date
+    global data_dict
+    d = w.wss(codes, fields, options)
+    for c, v in zip(d.Codes, d.Data[0]):
+        data_dict[c].append({'DATE': date, 'NAME': name, 'VALUE': v})
+
+
 if __name__ == '__main__':
     client = MongoClient(host='139.199.125.235', port=8888)
 
@@ -19,6 +28,9 @@ if __name__ == '__main__':
     # ////////// 基本资料
     # ////////// 发行兑付资料
     # ////////// 行情指标
+    # /// 收盘价
+    get(codes, 'close', 'tradeDate={};priceAdj=F;cycle=D'.format(date), '收盘价')
+
     # ////////// 债券估值
     # ////////// 分析指标
     # ////////// 信用分析指标
