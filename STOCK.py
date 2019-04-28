@@ -89,9 +89,7 @@ if __name__ == '__main__':
 
     # ////////// DATABASE(STOCK), COLLECTION(000001.SZ), DATE, TIME, NAME, VALUE, NOTE1, NOTE2
     w.start()
-
-    # date = datetime.date.today().strftime('%Y%m%d')
-    date = '20190423'
+    date = '20190423'  # date = datetime.date.today().strftime('%Y%m%d')
     codes = w.wset("sectorconstituent", "date={};sectorid=a001010100000000".format(date)).Data[1]  # 全部A股codes
     codes = codes[:10]  # 写代码时不用请求全部的
 
