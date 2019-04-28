@@ -4,21 +4,16 @@
 # @Author  : Bohan Li
 
 
+import datetime
 from WindPy import w
 from pymongo import MongoClient
 
 
-def get(codes, fields, options, name, note1=None, note2=None):
+def get(collection, name, code):
     global date
-    global data_dict
-    d = w.wss(codes, fields, options)
-    for c, v in zip(d.Codes, d.Data[0]):
-        if note2:
-            data_dict[c].append({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v), 'NOTE1': note1, 'NOTE2': note2})
-        elif note1:
-            data_dict[c].append({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v), 'NOTE1': note1})
-        else:
-            data_dict[c].append({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v)})
+    d = w.edb(code, "2000-01-01", date)
+    for t, v in zip(d.Times, d.Data[0]):
+        client['MACRO'][collection].insert_one({'DATE': t.strftime('%Y%m%d'), 'NAME': name, 'VALUE': str(v)})
 
 
 if __name__ == '__main__':
@@ -26,11 +21,14 @@ if __name__ == '__main__':
 
     # ////////// DATABASE(MACRO), COLLECTION(利率汇率), DATE, TIME, NAME, VALUE, NOTE1, NOTE2
     w.start()
-    date = '20190423'  # date = datetime.date.today().strftime('%Y%m%d')
+    date = datetime.date.today().strftime('%Y%m%d')
 
     # ////////// 国民经济核算
     # ////////// 工业
     # ////////// 价格指数
+    # /// CPI:当月同比
+    get('价格指数', 'CPI:当月同比', 'M0000612')
+
     # ////////// 对外贸易及投资
     # ////////// 固定资产投资
     # ////////// 国内贸易
@@ -39,9 +37,7 @@ if __name__ == '__main__':
     # ////////// 利率汇率
 
     # /// 定期存款利率:1年(整存整取)
-    d = w.edb("M0009808", "2000-01-01", date)
-    for t, v in zip(d.Times, d.Data[0]):
-        client['MACRO']['利率汇率'].insert_one({'DATE': t.strftime('%Y%m%d'), 'NAME': '定期存款利率:1年(整存整取)', 'VALUE': str(v)})
+    get('利率汇率', '定期存款利率:1年(整存整取)', 'M0009808')
 
     # ////////// 证券市场
     # ////////// 财政
