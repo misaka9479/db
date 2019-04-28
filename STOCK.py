@@ -23,10 +23,9 @@ def df2dict(df, name_in_csv, name_in_db):
 
 
 if __name__ == '__main__':
-
     client = MongoClient(host='139.199.125.235', port=8888)
     '''
-    # ////////// 行情指标
+    # ////////// 行情指标, DATA SOURCE=行情序列
     data = {i: pd.read_csv(os.path.join('csv', i), encoding='cp936') for i in os.listdir('csv')}
     data_dict = {}
     for i, df in data.items():
@@ -87,25 +86,18 @@ if __name__ == '__main__':
     for code, docs in data_dict.items():
         client['STOCK'][code].insert_many(docs)
     '''
-    # ////////// API数据, DATABASE, COLLECTION, CODE1, CODE2, DATE, TIME, VALUE, NOTE1, NOTE2
+
+    # ////////// DATABASE(STOCK), COLLECTION(000001.SZ), DATE, TIME, NAME, VALUE, NOTE1, NOTE2
     w.start()
 
     # date = datetime.date.today().strftime('%Y%m%d')
-    date = '20190423'  # date是8位日期字符串, 是在从API取数据时, 向API提供的日期, 也是在数据库中增加记录时的DATE字段的值
-    # codes是全部A股的code, 在向API取数据时通过codes进行遍历
-    codes = w.wset("sectorconstituent", "date={};sectorid=a001010100000000".format(date)).Data[1]
+    date = '20190423'
+    codes = w.wset("sectorconstituent", "date={};sectorid=a001010100000000".format(date)).Data[1]  # 全部A股codes
     codes = codes[:10]  # 写代码时不用请求全部的
 
     # ////////// 基本资料
     # ////////// 股本指标
-
     # ////////// 股东指标
-    # /// 大股东持股比例
-    for i in range(1, 2):  # 大股东持股比例有附加参数"大股东排名", 取值1-10, 在这里进行遍历
-        rsp = w.wss(codes, "holder_pct", "tradeDate={};order={}".format(date, i))  # 向API请求数据
-        data = zip(rsp.Codes, rsp.Data[0])
-        client['股东指标']['大股东持股比例'].insert_many([{'CODE1': code, 'DATE': date, 'VALUE': str(value), 'NOTE1': str(i)} for code, value in data if not math.isnan(value)])  # 向数据库插入多条数据
-
     # ////////// 行情指标
     # ////////// 估值指标
     # ////////// 风险分析
