@@ -4,7 +4,8 @@
 # @Author  : Bohan Li
 
 
-from STOCK import *
+from WindPy import w
+from pymongo import MongoClient
 
 if __name__ == '__main__':
     client = MongoClient(host='139.199.125.235', port=8888)
