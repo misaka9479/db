@@ -42,7 +42,7 @@ if __name__ == '__main__':
     get(codes, 'day', 'tradeDate={}'.format(date), '剩余期限(天)')
 
     # /// 收盘到期收益率
-    get(codes, 'day', 'tradeDate={}'.format(date), '收盘到期收益率')
+    get(codes, 'ytm_b', 'tradeDate={};returnType=1'.format(date), '收盘到期收益率', '央行规则')
 
     # ////////// 信用分析指标
     # /// 发行时债项评级
