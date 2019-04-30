@@ -27,6 +27,10 @@ def get(codes, fields, options, name, note1=None, note2=None):
     global data_dict
     d = w.wss(codes, fields, options)
     for c, v in zip(d.Codes, d.Data[0]):
+        # 对于特殊返回类型的特殊处理
+        if isinstance(v, datetime.datetime):
+            v = v.date().strftime('%Y%m%d')
+
         if note2:
             data_dict[c].append({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v), 'NOTE1': note1, 'NOTE2': note2})
         elif note1:
@@ -88,7 +92,7 @@ if __name__ == '__main__':
 
     # ////////// DATABASE(STOCK), COLLECTION(000001.SZ), DATE, TIME, NAME, VALUE, NOTE1, NOTE2
     w.start()
-    date = '20190423'  # date = datetime.date.today().strftime('%Y%m%d')
+    date = datetime.date.today().strftime('%Y%m%d')
     codes = w.wset("sectorconstituent", "date={};sectorid=a001010100000000".format(date)).Data[1]  # 全部A股codes
     codes = codes[:10]  # 写代码时不用请求全部的
     data_dict = {code: [] for code in codes}
@@ -108,6 +112,13 @@ if __name__ == '__main__':
     # ////////// 报表附注
     # ////////// 分红指标
     # ////////// 首发指标
+    # ////////// 增发指标
+    # /// 增发上市日
+    get(codes, 'fellow_listeddate', 'year=2014', '增发上市日')
+
+    # /// 公开发行日
+    get(codes, 'fellow_issuedate', 'year=2014', '公开发行日')
+
     # ////////// 配股指标
     # ////////// 可转债发行
     # ////////// 股权分置改革
