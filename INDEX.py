@@ -4,21 +4,27 @@
 # @Author  : Bohan Li
 
 
+import datetime
 from WindPy import w
 from pymongo import MongoClient
 
 
-def get(codes, fields, options, name, note1=None, note2=None):
+def get(codes, fields, options, name, note1=None, note2=None, flag=True):
     global date
     global data_dict
     d = w.wss(codes, fields, options)
     for c, v in zip(d.Codes, d.Data[0]):
+        # 对于特殊返回类型的特殊处理
+        if isinstance(v, datetime.datetime):
+            v = v.date().strftime('%Y%m%d')
         if note2:
             data_dict[c].append({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v), 'NOTE1': note1, 'NOTE2': note2})
         elif note1:
             data_dict[c].append({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v), 'NOTE1': note1})
-        else:
+        elif flag:
             data_dict[c].append({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v)})
+        else:
+            data_dict[c].append({'NAME': str(name), 'VALUE': str(v)})
 
 
 if __name__ == '__main__':
