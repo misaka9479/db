@@ -119,10 +119,10 @@ if __name__ == '__main__':
     # ////////// 首发指标
     # ////////// 增发指标
     # /// 增发上市日
-    get(codes, 'fellow_listeddate', 'year=2014', '增发上市日')
+    get(codes, 'fellow_listeddate', 'year=2018', '增发上市日', flag=False)
 
     # /// 公开发行日
-    get(codes, 'fellow_issuedate', 'year=2014', '公开发行日')
+    get(codes, 'fellow_issuedate', 'year=2018', '公开发行日', flag=False)
 
     # ////////// 配股指标
     # ////////// 可转债发行
