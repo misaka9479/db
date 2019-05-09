@@ -114,7 +114,31 @@ if __name__ == '__main__':
     # ////////// 盈利预测
     # ////////// 财务分析
     # ////////// 财务报表
+    # /// 资产总计
+    get(codes, 'tot_assets', 'unit=1;rptDate={};rptType=1'.format(date), '资产总计', '合并报表')
+
+    # /// 净利润
+    get(codes, 'net_profit_is', 'unit=1;rptDate={};rptType=1'.format(date), '净利润', '合并报表')
+
+    # /// 营业总收入
+    get(codes, 'tot_oper_rev', 'unit=1;rptDate={};rptType=1'.format(date), '营业总收入', '合并报表')
+
+    # /// 营业总成本
+    get(codes, 'tot_oper_cost', 'unit=1;rptDate={};rptType=1'.format(date), '营业总成本', '合并报表')
+
     # ////////// 报表附注
+    # /// 固定资产-累计折旧
+    get(codes, 'stmnote_assetdetail_2', 'unit=1;rptDate={}'.format(date), '固定资产-累计折旧')
+
+    # /// 投资性房地产-累计折旧
+    get(codes, 'stmnote_assetdetail_6', 'unit=1;rptDate={}'.format(date), '投资性房地产-累计折旧')
+
+    # /// 生产性生物资产-累计折旧
+    get(codes, 'stmnote_assetdetail_10', 'unit=1;rptDate={}'.format(date), '生产性生物资产-累计折旧')
+
+    # /// 油气资源-累计折耗
+    get(codes, 'stmnote_assetdetail_14', 'unit=1;rptDate={}'.format(date), '油气资源-累计折耗')
+
     # ////////// 分红指标
     # ////////// 首发指标
     # ////////// 增发指标
