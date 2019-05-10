@@ -114,8 +114,14 @@ if __name__ == '__main__':
     # ////////// 盈利预测
     # ////////// 财务分析
     # ////////// 财务报表
+    # /// 存货
+    get(codes, 'inventories', 'unit=1;rptDate={};rptType=1'.format(date), '存货', '合并报表')
+
     # /// 资产总计
     get(codes, 'tot_assets', 'unit=1;rptDate={};rptType=1'.format(date), '资产总计', '合并报表')
+
+    # /// 所有者权益合计
+    get(codes, 'tot_equity', 'unit=1;rptDate={};rptType=1'.format(date), '所有者权益合计', '合并报表')
 
     # /// 净利润
     get(codes, 'net_profit_is', 'unit=1;rptDate={};rptType=1'.format(date), '净利润', '合并报表')
@@ -123,8 +129,17 @@ if __name__ == '__main__':
     # /// 营业总收入
     get(codes, 'tot_oper_rev', 'unit=1;rptDate={};rptType=1'.format(date), '营业总收入', '合并报表')
 
+    # /// 营业收入
+    get(codes, 'oper_rev', 'unit=1;rptDate={};rptType=1'.format(date), '营业收入', '合并报表')
+
     # /// 营业总成本
     get(codes, 'tot_oper_cost', 'unit=1;rptDate={};rptType=1'.format(date), '营业总成本', '合并报表')
+
+    # /// 递延所得税
+    get(codes, 'stmnote_incometax_5', 'unit=1;rptDate={};rptType=1'.format(date), '递延所得税', '合并报表')
+
+    # /// 构建固定资产、无形资产和其他长期资产支付的现金
+    get(codes, 'cash_pay_acq_const_fiolta', 'unit=1;rptDate={};rptType=1'.format(date), '构建固定资产、无形资产和其他长期资产支付的现金', '合并报表')
 
     # ////////// 报表附注
     # /// 固定资产-累计折旧
