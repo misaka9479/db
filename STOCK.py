@@ -116,9 +116,22 @@ if __name__ == '__main__':
     # /// EBIT
     get(codes, 'ebit', 'unit=1;rptDate={}'.format(date), 'EBIT')
 
+    # /// 总资产净利率ROA
+    get(codes, 'roa', 'rptDate={}'.format(date), '总资产净利率ROA')
+
+    # /// 净资产收益率ROE
+    get(codes, 'roe', 'rptDate={}'.format(date), '净资产收益率ROE')
+
     # ////////// 财务报表
-    # /// 流动资产
-    get(codes, 'tot_cur_assets', 'unit=1;rptDate={};rptType=1'.format(date), '流动资产', '合并报表')
+
+    # /// 货币资金
+    get(codes, 'monetary_cap', 'unit=1;rptDate={};rptType=1'.format(date), '货币资金', '合并报表')
+
+    # /// 应收账款
+    get(codes, 'acct_rcv', 'unit=1;rptDate={};rptType=1'.format(date), '应收账款', '合并报表')
+
+    # /// 流动资产合计
+    get(codes, 'tot_cur_assets', 'unit=1;rptDate={};rptType=1'.format(date), '流动资产合计', '合并报表')
 
     # /// 固定资产
     get(codes, 'fix_assets', 'unit=1;rptDate={};rptType=1'.format(date), '固定资产', '合并报表')
@@ -168,6 +181,9 @@ if __name__ == '__main__':
     # /// 营业收入
     get(codes, 'oper_rev', 'unit=1;rptDate={};rptType=1'.format(date), '营业收入', '合并报表')
 
+    # /// 利息净收入
+    get(codes, 'net_int_inc', 'unit=1;rptDate={};rptType=1'.format(date), '利息净收入', '合并报表')
+
     # /// 营业总成本
     get(codes, 'tot_oper_cost', 'unit=1;rptDate={};rptType=1'.format(date), '营业总成本', '合并报表')
 
@@ -177,8 +193,14 @@ if __name__ == '__main__':
     # /// 递延所得税
     get(codes, 'stmnote_incometax_5', 'unit=1;rptDate={};rptType=1'.format(date), '递延所得税', '合并报表')
 
+    # /// 财务费用
+    get(codes, 'fin_exp_is', 'unit=1;rptDate={};rptType=1'.format(date), '财务费用', '合并报表')
+
     # /// 构建固定资产、无形资产和其他长期资产支付的现金
     get(codes, 'cash_pay_acq_const_fiolta', 'unit=1;rptDate={};rptType=1'.format(date), '构建固定资产、无形资产和其他长期资产支付的现金', '合并报表')
+
+    # /// 净利润
+    get(codes, 'net_profit_is', 'unit=1;rptDate={};rptType=1'.format(date), '净利润', '合并报表')
 
     # ////////// 报表附注
     # /// 持有至到期投资减值损失
