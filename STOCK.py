@@ -113,12 +113,48 @@ if __name__ == '__main__':
     # ////////// 风险分析
     # ////////// 盈利预测
     # ////////// 财务分析
+    # /// EBIT
+    get(codes, 'ebit', 'unit=1;rptDate={}'.format(date), 'EBIT')
+
     # ////////// 财务报表
+    # /// 流动资产
+    get(codes, 'tot_cur_assets', 'unit=1;rptDate={};rptType=1'.format(date), '流动资产', '合并报表')
+
+    # /// 固定资产
+    get(codes, 'fix_assets', 'unit=1;rptDate={};rptType=1'.format(date), '固定资产', '合并报表')
+
+    # /// 投资性房地产
+    get(codes, 'invest_real_estate', 'unit=1;rptDate={};rptType=1'.format(date), '投资性房地产', '合并报表')
+
+    # /// 持有至到期投资
+    get(codes, 'held_to_mty_invest', 'unit=1;rptDate={};rptType=1'.format(date), '持有至到期投资', '合并报表')
+
+    # /// 可供出售金融资产
+    get(codes, 'fin_assets_avail_for_sale', 'unit=1;rptDate={};rptType=1'.format(date), '可供出售金融资产', '合并报表')
+
     # /// 存货
     get(codes, 'inventories', 'unit=1;rptDate={};rptType=1'.format(date), '存货', '合并报表')
 
+    # /// 长期股权投资
+    get(codes, 'long_term_eqy_invest', 'unit=1;rptDate={};rptType=1'.format(date), '长期股权投资', '合并报表')
+
+    # /// 长期应收款
+    get(codes, 'long_term_rec', 'unit=1;rptDate={};rptType=1'.format(date), '长期应收款', '合并报表')
+
     # /// 资产总计
     get(codes, 'tot_assets', 'unit=1;rptDate={};rptType=1'.format(date), '资产总计', '合并报表')
+
+    # /// 流动负债
+    get(codes, 'tot_cur_liab', 'unit=1;rptDate={};rptType=1'.format(date), '流动负债', '合并报表')
+
+    # /// 短期借款
+    get(codes, 'st_borrow', 'unit=1;rptDate={};rptType=1'.format(date), '短期借款', '合并报表')
+
+    # /// 长期借款
+    get(codes, 'lt_borrow', 'unit=1;rptDate={};rptType=1'.format(date), '长期借款', '合并报表')
+
+    # /// 应付账款
+    get(codes, 'acct_payable', 'unit=1;rptDate={};rptType=1'.format(date), '应付账款', '合并报表')
 
     # /// 所有者权益合计
     get(codes, 'tot_equity', 'unit=1;rptDate={};rptType=1'.format(date), '所有者权益合计', '合并报表')
@@ -135,6 +171,9 @@ if __name__ == '__main__':
     # /// 营业总成本
     get(codes, 'tot_oper_cost', 'unit=1;rptDate={};rptType=1'.format(date), '营业总成本', '合并报表')
 
+    # /// 营业成本
+    get(codes, 'oper_cost', 'unit=1;rptDate={};rptType=1'.format(date), '营业成本', '合并报表')
+
     # /// 递延所得税
     get(codes, 'stmnote_incometax_5', 'unit=1;rptDate={};rptType=1'.format(date), '递延所得税', '合并报表')
 
@@ -142,6 +181,9 @@ if __name__ == '__main__':
     get(codes, 'cash_pay_acq_const_fiolta', 'unit=1;rptDate={};rptType=1'.format(date), '构建固定资产、无形资产和其他长期资产支付的现金', '合并报表')
 
     # ////////// 报表附注
+    # /// 持有至到期投资减值损失
+    get(codes, 'stmnote_ImpairmentLoss_9', 'unit=1;rptDate={};rptType=1'.format(date), '持有至到期投资减值损失', '合并报表')
+
     # /// 固定资产-累计折旧
     get(codes, 'stmnote_assetdetail_2', 'unit=1;rptDate={}'.format(date), '固定资产-累计折旧')
 
@@ -153,6 +195,9 @@ if __name__ == '__main__':
 
     # /// 油气资源-累计折耗
     get(codes, 'stmnote_assetdetail_14', 'unit=1;rptDate={}'.format(date), '油气资源-累计折耗')
+
+    # /// 长期投资减值准备合计
+    get(codes, 'stmnote_reserve_18', 'unit=1;rptDate={};rptType=1'.format(date), '持有至到期投资减值损失', '合并报表', '期末数')
 
     # ////////// 分红指标
     # ////////// 首发指标
