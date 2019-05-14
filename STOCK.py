@@ -131,7 +131,7 @@ if __name__ == '__main__':
     date = datetime.date.today().strftime('%Y%m%d')
     codes = w.wset("sectorconstituent", "date={};sectorid=a001010100000000".format(date)).Data[1]  # 全部A股codes
     data_dict = {code: [] for code in codes}
-    date_list = [(datetime.date.today() - datetime.timedelta(i)).strftime('%Y%m%d') for i in range(3421)]
+    date_list = [(datetime.date.today() - datetime.timedelta(i)).strftime('%Y%m%d') for i in range(3420)]
 
     rpt_date = []
     for i in range(2010, 2019):
