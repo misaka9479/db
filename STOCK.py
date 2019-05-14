@@ -56,67 +56,67 @@ if __name__ == '__main__':
         data_dict[i] = []
 
         # /// 前收盘价
-        data_dict[i] += df2dict(df, '前收盘价(元)', '前收盘价')
+        data_dict[i].append(df2dict(df, '前收盘价(元)', '前收盘价')
 
         # /// 开盘价
-        data_dict[i] += df2dict(df, '开盘价(元)', '开盘价')
+        data_dict[i].append(df2dict(df, '开盘价(元)', '开盘价')
 
         # /// 最高价
-        data_dict[i] += df2dict(df, '最高价(元)', '最高价')
+        data_dict[i].append(df2dict(df, '最高价(元)', '最高价')
 
         # /// 最低价
-        data_dict[i] += df2dict(df, '最低价(元)', '最低价')
+        data_dict[i].append(df2dict(df, '最低价(元)', '最低价')
 
         # /// 收盘价
-        data_dict[i] += df2dict(df, '收盘价(元)', '收盘价')
+        data_dict[i].append(df2dict(df, '收盘价(元)', '收盘价')
 
         # /// 成交量
-        data_dict[i] += df2dict(df, '成交量(股)', '成交量')
+        data_dict[i].append(df2dict(df, '成交量(股)', '成交量')
 
         # /// 成交金额(元)
-        data_dict[i] += df2dict(df, '成交金额(元)', '成交金额')
+        data_dict[i].append(df2dict(df, '成交金额(元)', '成交金额')
 
         # /// 均价
-        data_dict[i] += df2dict(df, '均价(元)', '均价')
+        data_dict[i].append(df2dict(df, '均价(元)', '均价')
 
         # /// 涨跌
-        data_dict[i] += df2dict(df, '涨跌(元)', '涨跌')
+        data_dict[i].append(df2dict(df, '涨跌(元)', '涨跌')
 
         # /// 涨跌幅
-        data_dict[i] += df2dict(df, '涨跌幅(%)', '涨跌幅')
+        data_dict[i].append(df2dict(df, '涨跌幅(%)', '涨跌幅')
 
         # /// 换手率
-        data_dict[i] += df2dict(df, '换手率(%)', '换手率')
+        data_dict[i].append(df2dict(df, '换手率(%)', '换手率')
 
         # /// A股流通市值(元)
-        data_dict[i] += df2dict(df, 'A股流通市值(元)', 'A股流通市值')
+        data_dict[i].append(df2dict(df, 'A股流通市值(元)', 'A股流通市值')
 
         # /// B股流通市值(元)
-        data_dict[i] += df2dict(df, 'B股流通市值(元)', 'B股流通市值')
+        data_dict[i].append(df2dict(df, 'B股流通市值(元)', 'B股流通市值')
 
         # /// 总市值(元)
-        data_dict[i] += df2dict(df, '总市值(元)', '总市值')
+        data_dict[i].append(df2dict(df, '总市值(元)', '总市值')
 
         # /// A股流通股本(股)
-        data_dict[i] += df2dict(df, 'A股流通股本(股)', 'A股流通股本')
+        data_dict[i].append(df2dict(df, 'A股流通股本(股)', 'A股流通股本')
 
         # /// B股流通股本(股)
-        data_dict[i] += df2dict(df, 'B股流通股本(股)', 'B股流通股本')
+        data_dict[i].append(df2dict(df, 'B股流通股本(股)', 'B股流通股本')
 
         # /// 总股本(股)
-        data_dict[i] += df2dict(df, '总股本(股)', '总股本')
+        data_dict[i].append(df2dict(df, '总股本(股)', '总股本')
 
         # /// 市盈率
-        data_dict[i] += df2dict(df, '市盈率', '市盈率')
+        data_dict[i].append(df2dict(df, '市盈率', '市盈率')
 
         # /// 市净率
-        data_dict[i] += df2dict(df, '市净率', '市净率')
+        data_dict[i].append(df2dict(df, '市净率', '市净率')
 
         # /// 市销率
-        data_dict[i] += df2dict(df, '市销率', '市销率')
+        data_dict[i].append(df2dict(df, '市销率', '市销率')
 
         # /// 市现率
-        data_dict[i] += df2dict(df, '市现率', '市现率')
+        data_dict[i].append(df2dict(df, '市现率', '市现率')
 
         pickle.dump(data_dict, open('data_dict.pkl', 'wb'))
         print(i)
@@ -130,17 +130,46 @@ if __name__ == '__main__':
     w.start()
     date = datetime.date.today().strftime('%Y%m%d')
     codes = w.wset("sectorconstituent", "date={};sectorid=a001010100000000".format(date)).Data[1]  # 全部A股codes
-    codes = codes[:10]  # 写代码时不用请求全部的
     data_dict = {code: [] for code in codes}
-    date_list = [(datetime.date.today() - datetime.timedelta(i)).strftime('%Y%m%d') for i in range(100)]
+    date_list = [(datetime.date.today() - datetime.timedelta(i)).strftime('%Y%m%d') for i in range(3421)]
 
     rpt_date = []
-    for i in date_list:
-        rpt_date.append(w.wss(codes, "latelyrd_bt", "tradeDate={}".format(i)))
-    rpt_date = [i.Data[0] for i in rpt_date]
-    rpt_date = list(chain.from_iterable(rpt_date))
-    rpt_date = sorted(list(set(rpt_date)))
-    rpt_date = [i.strftime('%Y%m%d') for i in rpt_date]
+    for i in range(2010, 2019):
+        rpt_date.append(datetime.date(i, 3, 31))
+        rpt_date.append(datetime.date(i, 6, 30))
+        rpt_date.append(datetime.date(i, 9, 3))
+        rpt_date.append(datetime.date(i, 12, 31))
+
+    # ////////// 基本资料
+    # ////////// 股本指标
+    # ////////// 股东指标
+    # ////////// 行情指标
+    # ////////// 分红指标
+    # ////////// 配股指标
+    # ////////// 可转债发行
+    # ////////// 股权分置改革
+    # ////////// 技术形态
+
+    # ////////// 首发指标
+    # ///发行数量合计
+    get(codes, "ipo_amount", "unit=1", '发行数量合计', flag=False)
+
+    # ///新股发行数量
+    get(codes, "ipo_newshares", "unit=1", '新股发行数量 ', flag=False)
+
+    # ///首发上市日期
+    get(codes, "ipo_date", '首发上市日期', flag=False)
+
+    # ////////// 增发指标
+    # /// 增发上市日
+    for year in range(2010, 2019):
+        get(codes, 'fellow_listeddate', 'year={}'.format(year), '增发上市日', flag=False)
+
+    # /// 公开发行日
+    for year in range(2010, 2019):
+        get(codes, 'fellow_issuedate', 'year={}'.format(year), '公开发行日', flag=False)
+
+    pickle.dump(data_dict, open('data_dict.pkl', 'wb'))
 
     for date in date_list:
         # ////////// 估值指标
@@ -156,24 +185,6 @@ if __name__ == '__main__':
         # ///市现率PCF(经营现金流)
         get(codes, "pcf_ocf", "tradeDate={};ruleType=2".format(date), '市现率PCF(经营现金流)', '上年年报')
 
-    # ////////// 基本资料
-    # ////////// 股本指标
-    # ////////// 股东指标
-    # ////////// 行情指标
-    for date in rpt_date:
-        # ///股息率(报告期)
-        for rptYear in range(2000, 2019):
-            get(codes, "dividendyield", "tradeDate={};rptYear={}".format(date, rptYear), '股息率(报告期)', str(rptYear))
-
-        # /// 研发支出合计
-        get(codes, "researchanddevelopmentexpenses", "unit=1;rptDate={}".format(date), '研发支出合计')
-
-        # ///净营运资本
-        get(codes, "networkingcapital", "unit=1;rptDate={}".format(date), '净营运资本')
-
-        # /// 基本每股收益
-        get(codes, "eps_basic_is", "rptDate={};rptType=1".format(date), '基本每股收益 ', '合并报表')
-
         # ////////// 风险分析
         # /// BETA值(最近100周)
         get(codes, "beta_100w", "tradeDate={}".format(date), 'BETA值(最近100周)')
@@ -187,6 +198,35 @@ if __name__ == '__main__':
 
         # ///一致预测每股收益(FY3)
         get(codes, "west_eps_FY3", "tradeDate={}".format(date), '一致预测每股收益(FY3)')
+
+        # ////////// 其他指标
+        # /// 增长率—利润总额(TTM)_PIT
+        get(codes, 'fa_tpgr_ttm', 'tradeDate={}'.format(date), '增长率—利润总额(TTM)_PIT')
+
+        # /// 增长率—净利润(TTM)_PIT
+        get(codes, 'fa_npgr_ttm', 'tradeDate={}'.format(date), '增长率—净利润(TTM)_PIT')
+
+        # /// 20日收益方差_PIT
+        get(codes, "risk_variance20", 'tradeDate={}'.format(date), '20日收益方差_PIT')
+
+        # ///现金流资产比—资产回报率(TTM)_PIT
+        get(codes, "fa_acca_ttm", 'tradeDate={}'.format(date), '现金流资产比—资产回报率(TTM)_PIT')
+
+        pickle.dump(data_dict, open('data_dict.pkl', 'wb'))
+
+    for date in rpt_date:
+        # ///股息率(报告期)
+        for rptYear in range(2010, 2019):
+            get(codes, "dividendyield", "tradeDate={};rptYear={}".format(date, rptYear), '股息率(报告期)', str(rptYear))
+
+        # /// 研发支出合计
+        get(codes, "researchanddevelopmentexpenses", "unit=1;rptDate={}".format(date), '研发支出合计')
+
+        # ///净营运资本
+        get(codes, "networkingcapital", "unit=1;rptDate={}".format(date), '净营运资本')
+
+        # /// 基本每股收益
+        get(codes, "eps_basic_is", "rptDate={};rptType=1".format(date), '基本每股收益 ', '合并报表')
 
         # ////////// 财务分析
         # /// EBIT
@@ -202,7 +242,6 @@ if __name__ == '__main__':
         get(codes, "cfps", "rptDate={};currencyType=".format(date), '每股现金流量净额')
 
         # ////////// 财务报表
-
         # /// 货币资金
         get(codes, 'monetary_cap', 'unit=1;rptDate={};rptType=1'.format(date), '货币资金', '合并报表')
 
@@ -332,42 +371,6 @@ if __name__ == '__main__':
 
         # ///商誉减值损失
         get(codes, "stmnote_ImpairmentLoss_6", "unit=1;rptDate={};rptType=1".format(date), '商誉减值损失', '合并报表')
-
-        # ////////// 分红指标
-        # ////////// 首发指标
-        # ///发行数量合计
-        get(codes, "ipo_amount", "unit=1", '发行数量合计')
-
-        # ///新股发行数量
-        get(codes, "ipo_newshares", "unit=1", '新股发行数量 ')
-
-        # ///首发上市日期
-        get(codes, "ipo_date", '首发上市日期')
-
-        # ////////// 增发指标
-        # /// 增发上市日
-        get(codes, 'fellow_listeddate', 'year=2018', '增发上市日', flag=False)
-
-        # /// 公开发行日
-        get(codes, 'fellow_issuedate', 'year=2018', '公开发行日', flag=False)
-
-        # ////////// 配股指标
-        # ////////// 可转债发行
-        # ////////// 股权分置改革
-        # ////////// 技术形态
-        # ////////// 其他指标
-
-        # /// 增长率—利润总额(TTM)_PIT
-        get(codes, 'fa_tpgr_ttm', 'tradeDate={}'.format(date), '增长率—利润总额(TTM)_PIT')
-
-        # /// 增长率—净利润(TTM)_PIT
-        get(codes, 'fa_npgr_ttm', 'tradeDate={}'.format(date), '增长率—净利润(TTM)_PIT')
-
-        # /// 20日收益方差_PIT
-        get(codes, "risk_variance20", 'tradeDate={}'.format(date), '20日收益方差_PIT')
-
-        # ///现金流资产比—资产回报率(TTM)_PIT
-        get(codes, "fa_acca_ttm", 'tradeDate={}'.format(date), '现金流资产比—资产回报率(TTM)_PIT')
 
         pickle.dump(data_dict, open('data_dict.pkl', 'wb'))
 
