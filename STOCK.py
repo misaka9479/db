@@ -46,7 +46,7 @@ def get(codes, fields, options, name, note1=None, note2=None, flag=True):
 
 if __name__ == '__main__':
     client = MongoClient(host='139.199.125.235', port=8888)
-    '''
+
     # ////////// 行情指标, DATA SOURCE=行情序列
     data = {i: pd.read_csv(os.path.join('csv', i), encoding='cp936') for i in os.listdir('csv')}
     data_dict = {}
@@ -69,6 +69,12 @@ if __name__ == '__main__':
         # /// 收盘价
         data_dict[i] += df2dict(df, '收盘价(元)', '收盘价')
 
+        # /// 成交量
+        data_dict[i] += df2dict(df, '成交量(股)', '成交量')
+
+        # /// 成交金额(元)
+        data_dict[i] += df2dict(df, '成交金额(元)', '成交金额')
+
         # /// 均价
         data_dict[i] += df2dict(df, '均价(元)', '均价')
 
@@ -79,21 +85,44 @@ if __name__ == '__main__':
         data_dict[i] += df2dict(df, '涨跌幅(%)', '涨跌幅')
 
         # /// 换手率
-        # data_dict[i] += df2dict(df, '换手率(%)', '换手率')
+        data_dict[i] += df2dict(df, '换手率(%)', '换手率')
 
-        # /// 成交量
-        data_dict[i] += df2dict(df, '成交量(股)', '成交量')
+        # /// A股流通市值(元)
+        data_dict[i] += df2dict(df, 'A股流通市值(元)', 'A股流通市值')
 
-        # /// 成交额
-        data_dict[i] += df2dict(df, '成交金额(元)', '成交额')
-        
+        # /// B股流通市值(元)
+        data_dict[i] += df2dict(df, 'B股流通市值(元)', 'B股流通市值')
+
+        # /// 总市值(元)
+        data_dict[i] += df2dict(df, '总市值(元)', '总市值')
+
+        # /// A股流通股本(股)
+        data_dict[i] += df2dict(df, 'A股流通股本(股)', 'A股流通股本')
+
+        # /// B股流通股本(股)
+        data_dict[i] += df2dict(df, 'B股流通股本(股)', 'B股流通股本')
+
+        # /// 总股本(股)
+        data_dict[i] += df2dict(df, '总股本(股)', '总股本')
+
+        # /// 市盈率
+        data_dict[i] += df2dict(df, '市盈率', '市盈率')
+
+        # /// 市净率
+        data_dict[i] += df2dict(df, '市净率', '市净率')
+
+        # /// 市销率
+        data_dict[i] += df2dict(df, '市销率', '市销率')
+
+        # /// 市现率
+        data_dict[i] += df2dict(df, '市现率', '市现率')
+
         # pickle.dump(data_dict, open('data_dict.pkl', 'wb'))
         print(i)
 
     # data_dict = pickle.load(open('data_dict.pkl', 'rb'))
     for code, docs in data_dict.items():
         client['STOCK'][code].insert_many(docs)
-    '''
 
     # ////////// DATABASE(STOCK), COLLECTION(000001.SZ), DATE, TIME, NAME, VALUE, NOTE1, NOTE2
     w.start()
@@ -124,7 +153,8 @@ if __name__ == '__main__':
     # get(codes, "qstmnote_insur_212530", "unit=1;rptDate={}".format(date), '市盈率')
 
     # # ///股息率(报告期)
-    get(codes, "dividendyield", "tradeDate={};rptYear=2018".format(date), '股息率(报告期)', '2018')  # todo
+    for rptYear in range(2000, 2019):
+        get(codes, "dividendyield", "tradeDate={};rptYear={}".format(date, rptYear), '股息率(报告期)', str(rptYear))
 
     # /// 研发支出合计
     get(codes, "researchanddevelopmentexpenses", "unit=1;rptDate={}".format(date), '研发支出合计')
@@ -158,9 +188,6 @@ if __name__ == '__main__':
 
     # /// 净资产收益率ROE
     get(codes, 'roe', 'rptDate={}'.format(date), '净资产收益率ROE')
-
-    # # /// 净现金流
-    # get(codes, "qstmnote_insur_212530", "unit=1;rptDate={}".format(date), '净现金流')
 
     # # /// 每股现金流量净额
     get(codes, "cfps", "rptDate={};currencyType=".format(date), '每股现金流量净额')
