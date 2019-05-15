@@ -29,20 +29,25 @@ def df2dict(df, name_in_csv, name_in_db):
 
 def get(codes, fields, options, name, note1=None, note2=None, flag=True):
     global date
-    global data_dict
+    # global data_dict
     d = w.wss(codes, fields, options)
     for c, v in zip(d.Codes, d.Data[0]):
         # 对于特殊返回类型的特殊处理
         if isinstance(v, datetime.datetime):
             v = v.date().strftime('%Y%m%d')
         if note2:
-            data_dict[c].append({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v), 'NOTE1': note1, 'NOTE2': note2})
+            # data_dict[c].append({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v), 'NOTE1': note1, 'NOTE2': note2})
+            client['STOCK'][code].insert_one({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v), 'NOTE1': note1, 'NOTE2': note2})
         elif note1:
-            data_dict[c].append({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v), 'NOTE1': note1})
+            # data_dict[c].append({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v), 'NOTE1': note1})
+            client['STOCK'][code].insert_one({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v), 'NOTE1': note1})
+
         elif flag:
-            data_dict[c].append({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v)})
+            # data_dict[c].append({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v)})
+            client['STOCK'][code].insert_one({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v)})
         else:
             data_dict[c].append({'NAME': str(name), 'VALUE': str(v)})
+            client['STOCK'][code].insert_one({'NAME': str(name), 'VALUE': str(v)})
 
 
 if __name__ == '__main__':
@@ -50,10 +55,8 @@ if __name__ == '__main__':
     '''
     # ////////// 行情指标, DATA SOURCE=行情序列
     data = {i: pd.read_csv(os.path.join('csv', i), encoding='cp936') for i in os.listdir('csv')}
-    data_dict = {}
     for i, df in data.items():
         i = i.strip('.CSV')
-        data_dict[i] = []
 
         # /// 前收盘价
         data_dict[i].append(df2dict(df, '前收盘价(元)', '前收盘价')
@@ -121,7 +124,6 @@ if __name__ == '__main__':
         pickle.dump(data_dict, open('data_dict.pkl', 'wb'))
         print(i)
 
-    # data_dict = pickle.load(open('data_dict.pkl', 'rb'))
     for code, docs in data_dict.items():
         client['STOCK'][code].insert_many(docs)
     '''
@@ -130,7 +132,7 @@ if __name__ == '__main__':
     w.start()
     date = datetime.date.today().strftime('%Y%m%d')
     codes = w.wset("sectorconstituent", "date={};sectorid=a001010100000000".format(date)).Data[1]  # 全部A股codes
-    data_dict = {code: [] for code in codes}
+    # data_dict = {code: [] for code in codes}
     date_list = [(datetime.date.today() - datetime.timedelta(i)).strftime('%Y%m%d') for i in range(3420)]
 
     rpt_date = []
@@ -168,8 +170,6 @@ if __name__ == '__main__':
     # /// 公开发行日
     for year in range(2010, 2019):
         get(codes, 'fellow_issuedate', 'year={}'.format(year), '公开发行日', flag=False)
-
-    pickle.dump(data_dict, open('data_dict.pkl', 'wb'))
 
     for date in date_list:
         # ////////// 估值指标
@@ -211,8 +211,6 @@ if __name__ == '__main__':
 
         # ///现金流资产比—资产回报率(TTM)_PIT
         get(codes, "fa_acca_ttm", 'tradeDate={}'.format(date), '现金流资产比—资产回报率(TTM)_PIT')
-
-        pickle.dump(data_dict, open('data_dict.pkl', 'wb'))
 
     for date in rpt_date:
         # ///股息率(报告期)
@@ -372,7 +370,7 @@ if __name__ == '__main__':
         # ///商誉减值损失
         get(codes, "stmnote_ImpairmentLoss_6", "unit=1;rptDate={};rptType=1".format(date), '商誉减值损失', '合并报表')
 
-        pickle.dump(data_dict, open('data_dict.pkl', 'wb'))
-
+    '''
     for code, docs in data_dict.items():
         client['STOCK'][code].insert_many(docs)
+    '''
