@@ -137,7 +137,7 @@ if __name__ == '__main__':
     for i in range(2010, 2019):
         rpt_date.append(datetime.date(i, 3, 31))
         rpt_date.append(datetime.date(i, 6, 30))
-        rpt_date.append(datetime.date(i, 9, 3))
+        rpt_date.append(datetime.date(i, 9, 30))
         rpt_date.append(datetime.date(i, 12, 31))
 
     # ////////// 基本资料
@@ -360,15 +360,10 @@ if __name__ == '__main__':
         get(codes, 'stmnote_assetdetail_14', 'unit=1;rptDate={}'.format(date), '油气资源-累计折耗')
 
         # /// 长期投资减值准备合计
-        get(codes, 'stmnote_reserve_18', 'unit=1;rptDate={};rptType=1'.format(date), '持有至到期投资减值损失', '合并报表', '期末数')
+        get(codes, 'stmnote_reserve_18', 'unit=1;rptDate={};rptType=1;dataItem=1'.format(date), '长期投资减值准备合计', '合并报表', '期末数')
 
         # /// 广告宣传推广费(销售费用)
         get(codes, "stmnote_others_7633", "unit=1;rptDate={};rptType=1".format(date), '广告宣传推广费(销售费用)', '合并报表')
 
         # ///商誉减值损失
         get(codes, "stmnote_ImpairmentLoss_6", "unit=1;rptDate={};rptType=1".format(date), '商誉减值损失', '合并报表')
-
-    '''
-    for code, docs in data_dict.items():
-        client['STOCK'][code].insert_many(docs)
-    '''
