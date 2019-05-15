@@ -29,24 +29,22 @@ def df2dict(df, name_in_csv, name_in_db):
 
 def get(codes, fields, options, name, note1=None, note2=None, flag=True):
     global date
-    # global data_dict
+    print('{} {}'.format(name, options))
     d = w.wss(codes, fields, options)
-    for c, v in zip(d.Codes, d.Data[0]):
+    if d.ErrorCode != 0:
+        print(d)
+        os._exit(-1)
+    for code, v in zip(d.Codes, d.Data[0]):
         # 对于特殊返回类型的特殊处理
         if isinstance(v, datetime.datetime):
             v = v.date().strftime('%Y%m%d')
         if note2:
-            # data_dict[c].append({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v), 'NOTE1': note1, 'NOTE2': note2})
             client['STOCK'][code].insert_one({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v), 'NOTE1': note1, 'NOTE2': note2})
         elif note1:
-            # data_dict[c].append({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v), 'NOTE1': note1})
             client['STOCK'][code].insert_one({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v), 'NOTE1': note1})
-
         elif flag:
-            # data_dict[c].append({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v)})
             client['STOCK'][code].insert_one({'DATE': str(date), 'NAME': str(name), 'VALUE': str(v)})
         else:
-            data_dict[c].append({'NAME': str(name), 'VALUE': str(v)})
             client['STOCK'][code].insert_one({'NAME': str(name), 'VALUE': str(v)})
 
 
@@ -160,7 +158,7 @@ if __name__ == '__main__':
     get(codes, "ipo_newshares", "unit=1", '新股发行数量 ', flag=False)
 
     # ///首发上市日期
-    get(codes, "ipo_date", '首发上市日期', flag=False)
+    get(codes, "ipo_date", '', '首发上市日期', flag=False)
 
     # ////////// 增发指标
     # /// 增发上市日
