@@ -345,7 +345,7 @@ if __name__ == '__main__':
 
         # ////////// 报表附注
         # /// 持有至到期投资减值损失
-        get(codes, 'stmnote_ImpairmentLoss_9', 'unit=1;rptDate={};rptType=1'.format(date), '持有至到期投资减值损失', '合并报表')
+        # get(codes, 'stmnote_ImpairmentLoss_9', 'unit=1;rptDate={};rptType=1'.format(date), '持有至到期投资减值损失', '合并报表')
 
         # /// 固定资产-累计折旧
         get(codes, 'stmnote_assetdetail_2', 'unit=1;rptDate={}'.format(date), '固定资产-累计折旧')
