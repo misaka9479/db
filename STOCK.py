@@ -169,6 +169,10 @@ if __name__ == '__main__':
     for year in range(2010, 2019):
         get(codes, 'fellow_issuedate', 'year={}'.format(year), '公开发行日', flag=False)
 
+    # ///股息率(报告期)
+    for rptYear in range(2010, 2019):
+        get(codes, "dividendyield", "tradeDate={};rptYear={}".format(date, rptYear), '股息率(报告期)', str(rptYear))
+
     for date in date_list:
         # ////////// 估值指标
         # /// 总市值1
@@ -211,10 +215,6 @@ if __name__ == '__main__':
         get(codes, "fa_acca_ttm", 'tradeDate={}'.format(date), '现金流资产比—资产回报率(TTM)_PIT')
 
     for date in rpt_date:
-        # ///股息率(报告期)
-        for rptYear in range(2010, 2019):
-            get(codes, "dividendyield", "tradeDate={};rptYear={}".format(date, rptYear), '股息率(报告期)', str(rptYear))
-
         # /// 研发支出合计
         get(codes, "researchanddevelopmentexpenses", "unit=1;rptDate={}".format(date), '研发支出合计')
 
