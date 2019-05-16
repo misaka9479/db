@@ -57,71 +57,71 @@ if __name__ == '__main__':
         i = i.strip('.CSV')
 
         # /// 前收盘价
-        data_dict[i].append(df2dict(df, '前收盘价(元)', '前收盘价')
+        data_dict[i].append(df2dict(df, '前收盘价(元)', '前收盘价'))
 
         # /// 开盘价
-        data_dict[i].append(df2dict(df, '开盘价(元)', '开盘价')
+        data_dict[i].append(df2dict(df, '开盘价(元)', '开盘价'))
 
         # /// 最高价
-        data_dict[i].append(df2dict(df, '最高价(元)', '最高价')
+        data_dict[i].append(df2dict(df, '最高价(元)', '最高价'))
 
         # /// 最低价
-        data_dict[i].append(df2dict(df, '最低价(元)', '最低价')
+        data_dict[i].append(df2dict(df, '最低价(元)', '最低价'))
 
         # /// 收盘价
-        data_dict[i].append(df2dict(df, '收盘价(元)', '收盘价')
+        data_dict[i].append(df2dict(df, '收盘价(元)', '收盘价'))
 
         # /// 成交量
-        data_dict[i].append(df2dict(df, '成交量(股)', '成交量')
+        data_dict[i].append(df2dict(df, '成交量(股)', '成交量'))
 
         # /// 成交金额(元)
-        data_dict[i].append(df2dict(df, '成交金额(元)', '成交金额')
+        data_dict[i].append(df2dict(df, '成交金额(元)', '成交金额'))
 
         # /// 均价
-        data_dict[i].append(df2dict(df, '均价(元)', '均价')
+        data_dict[i].append(df2dict(df, '均价(元)', '均价'))
 
         # /// 涨跌
-        data_dict[i].append(df2dict(df, '涨跌(元)', '涨跌')
+        data_dict[i].append(df2dict(df, '涨跌(元)', '涨跌'))
 
         # /// 涨跌幅
-        data_dict[i].append(df2dict(df, '涨跌幅(%)', '涨跌幅')
+        data_dict[i].append(df2dict(df, '涨跌幅(%)', '涨跌幅'))
 
         # /// 换手率
-        data_dict[i].append(df2dict(df, '换手率(%)', '换手率')
+        data_dict[i].append(df2dict(df, '换手率(%)', '换手率'))
 
         # /// A股流通市值(元)
-        data_dict[i].append(df2dict(df, 'A股流通市值(元)', 'A股流通市值')
+        data_dict[i].append(df2dict(df, 'A股流通市值(元)', 'A股流通市值'))
 
         # /// B股流通市值(元)
-        data_dict[i].append(df2dict(df, 'B股流通市值(元)', 'B股流通市值')
+        data_dict[i].append(df2dict(df, 'B股流通市值(元)', 'B股流通市值'))
 
         # /// 总市值(元)
-        data_dict[i].append(df2dict(df, '总市值(元)', '总市值')
+        data_dict[i].append(df2dict(df, '总市值(元)', '总市值'))
 
         # /// A股流通股本(股)
-        data_dict[i].append(df2dict(df, 'A股流通股本(股)', 'A股流通股本')
+        data_dict[i].append(df2dict(df, 'A股流通股本(股)', 'A股流通股本'))
 
         # /// B股流通股本(股)
-        data_dict[i].append(df2dict(df, 'B股流通股本(股)', 'B股流通股本')
+        data_dict[i].append(df2dict(df, 'B股流通股本(股)', 'B股流通股本'))
 
         # /// 总股本(股)
-        data_dict[i].append(df2dict(df, '总股本(股)', '总股本')
+        data_dict[i].append(df2dict(df, '总股本(股)', '总股本'))
 
         # /// 市盈率
-        data_dict[i].append(df2dict(df, '市盈率', '市盈率')
+        data_dict[i].append(df2dict(df, '市盈率', '市盈率'))
 
         # /// 市净率
-        data_dict[i].append(df2dict(df, '市净率', '市净率')
+        data_dict[i].append(df2dict(df, '市净率', '市净率'))
 
         # /// 市销率
-        data_dict[i].append(df2dict(df, '市销率', '市销率')
+        data_dict[i].append(df2dict(df, '市销率', '市销率'))
 
         # /// 市现率
-        data_dict[i].append(df2dict(df, '市现率', '市现率')
+        data_dict[i].append(df2dict(df, '市现率', '市现率'))
 
         pickle.dump(data_dict, open('data_dict.pkl', 'wb'))
         print(i)
-
+        
     for code, docs in data_dict.items():
         client['STOCK'][code].insert_many(docs)
     '''
